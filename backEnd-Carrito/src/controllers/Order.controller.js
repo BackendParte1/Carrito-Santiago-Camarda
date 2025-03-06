@@ -13,13 +13,26 @@ export const getOrders = async (req, res) => {
     return res.status(500).json({ message: "Error interno del servidor" });
   }
 };
-
-// Agregar orden
 export const addOrder = async (req, res) => {
   const { items } = req.body;
+  console.log("Datos recibidos:", JSON.stringify(req.body, null, 2));
 
-  if (!items || items.length === 0) {
-    return res.status(400).json({ message: "El carrito de compras está vacío" });
+  if (!Array.isArray(items) || items.length === 0) {
+    return res.status(400).json({ message: "El carrito de compras está vacío o no es válido" });
+  }
+
+  // Validar que todos los items tengan valores numéricos correctos
+  const validItems = items.every(item => 
+    item.productId && 
+    typeof item.name === "string" &&
+    typeof item.price === "number" && 
+    typeof item.quantity === "number" &&
+    item.price > 0 &&
+    item.quantity > 0
+  );
+
+  if (!validItems) {
+    return res.status(400).json({ message: "Datos inválidos en los productos" });
   }
 
   try {
@@ -30,12 +43,12 @@ export const addOrder = async (req, res) => {
         price: item.price,
         quantity: item.quantity
       })),
-      totalPrice: items.reduce((accum, item) => accum + item.price * item.quantity, 0)
+      totalPrice: Math.round(items.reduce((accum, item) => accum + (item.price * item.quantity), 0))
     });
 
     await newOrder.save();
 
-    return res.status(201).json({ message: "Orden cargada con éxito" });
+    return res.status(201).json({ message: "Orden cargada con éxito", order: newOrder });
   } catch (error) {
     console.error("Error al cargar una orden", error);
     return res.status(500).json({ message: "Error interno del servidor" });

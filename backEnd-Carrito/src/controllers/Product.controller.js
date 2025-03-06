@@ -1,21 +1,21 @@
 import Product from "../models/Products.model.js";
 
 
-//obtener todos los productos en la base de datos
-export const getProducts=async(req,res)=>{
-try {
-    const products=await Product.find();
-    if(!products || products.length===0)
-    {
-        return res.status(404).json({messeage:"no hay productos cargados"})
+export const getProducts = async (req, res) => {
+    try {
+      const products = await Product.find();
+  
+      if (!products || products.length === 0) {
+        return res.status(404).json({ message: "No hay productos cargados" });
+      }
+  
+      // ✅ Solo enviamos una única respuesta
+      return res.status(200).json({ status: "success", payload: products });
+    } catch (error) {
+      return res.status(500).json({ status: "error", message: error.message });
     }
-    res.status(200).send({status:"succes",payload:products})
-   return res.json(products)
-} catch (error) {
-    res.status(500).send({ status: "error", message: error.message });
-
-}
-};
+  };
+  
 
 
 //agregar Productos
@@ -37,6 +37,23 @@ export const addProduct=async(req,res)=>{
     }
 }
 
+// Agregar múltiples productos
+export const addProductsMany = async (req, res) => {
+    try {
+        const products = req.body; // Recibe un array de productos
+
+        if (!Array.isArray(products) || products.length === 0) {
+            return res.status(400).json({ message: "Se requiere un array de productos" });
+        }
+
+        const newProducts = await Product.insertMany(products); // Inserta varios productos en MongoDB
+
+        return res.status(201).json({ message: "Productos agregados correctamente", newProducts });
+    } catch (error) {
+        console.error("Error al agregar productos:", error);
+        res.status(500).json({ status: "error", message: error.message });
+    }
+};
 
 //eliminar Productos
 export const deleteProducts = async (req, res) => {

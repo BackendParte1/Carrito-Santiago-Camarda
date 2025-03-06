@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras</title>
+    <link rel="stylesheet" href="./css/style.css">
+   
+</head>
+<body>
+    <header>
+        <a href="./index.html" class="logo">
+            <img src="/Front/img/mercadoliebre (1).png" alt="logo">
+        </a>
+        <nav class="navbar">
+            <a href="/historial-compras.html">Historial de compras</a>
+            <a href="./carrito.html" class="cart-icon">
+                <img src="img/shopping-cart (1).svg" alt="carrito">
+                <span class="item-count" id="cart-counter">0</span>
+            </a>
+        </nav>
+    </header>
+
+    <section class="producto">
+        <h1>Carrito de Compras</h1>
+        <table id="cart-table">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                    <th>Total</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Se llenará dinámicamente con JS -->
+            </tbody>
+        </table>
+        <button id="check-out" class="finalizar-compra">Finalizar compra</button>
+    </section>
+
+    <script type="module" src="./JS/checkOut.js"></script>
+</body>
+</html>
