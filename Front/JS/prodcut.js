@@ -28,7 +28,7 @@ export const data = async () => {
             </div>
         </div>`;
 
-        // 🔹 Usar insertAdjacentHTML en lugar de innerHTML +=
+ 
         $container.insertAdjacentHTML("beforeend", productHTML);
        
     });
