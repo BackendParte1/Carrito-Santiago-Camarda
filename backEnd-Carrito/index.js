@@ -14,7 +14,7 @@ const app=express();
 //crear middlewares
 app.use(express.json());// Middleware específico para rutas con JSON
 app.use(morgan("dev"));
-
+console.log(app);
 const origenesPermitidos=["http://127.0.0.1:5500"];
 
 const corsOptions = { 
@@ -25,6 +25,7 @@ const corsOptions = {
             callback(new Error("Cliente no permitido"));
         }
     }
+   
 };
 
 app.use(cors(corsOptions))
